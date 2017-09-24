@@ -7,13 +7,13 @@
         <md-option *ngFor="let avatar of avatars; let i = index;" [value]="avatar">Avatar - {{i + 1}}</md-option>
       </md-select>
     </div>
-    <md-input-container>
+    <md-form-field>
       <input mdInput ngModel name="name" placeholder="Full name" required>
-    </md-input-container>
+    </md-form-field>
 
-    <md-input-container>
+    <md-form-field>
       <textarea mdInput ngModel name="details" placeholder="Details" rows="15" cols="60" required></textarea>
-    </md-input-container>
+    </md-form-field>
 
     <div fxLayout="row" fxLayoutGap="24px">
       <md-checkbox ngModel name="isAdmin">Is Admin?</md-checkbox>
