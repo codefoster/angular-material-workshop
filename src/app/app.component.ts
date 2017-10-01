@@ -12,7 +12,6 @@ import {DialogComponent} from './dialog/dialog.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
   users = [
     {
       name: 'Lia Lugo',

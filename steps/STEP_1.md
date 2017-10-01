@@ -13,9 +13,30 @@
 
 ### Step #1 Task:
 
-Here you will install Angular Material in your Angular application.
+In this step we will install Angular Material in your Angular application.
 
-* Import `MaterialModule` from `@angular/material` and use it inside the imports
+Since we don't want to overload our app with redundant Material components we are going to create a separate NgModule 
+only for Material so we only import the components we're going to use
+
+Create a `material.module.ts` file next to your `app.module.ts`
+
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
+* Import `MaterialModule` from `src/app/material.module.ts` and use it inside the imports
 * Since Angular Material depends on animations, the `BrowserAnimationsModule` needs to be included as well.
 
 > Since we will also be using flexbox CSS, let's also include the `@angular/flex-layout` library.
@@ -36,8 +57,9 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
+
+import {MaterialModule} from './material.module';
 
 import {AppComponent} from './app.component';
 
