@@ -9,10 +9,12 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MaterialModule} from './material.module';
 
 import {AppComponent} from './app.component';
+import {DialogComponent} from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +25,7 @@ import {AppComponent} from './app.component';
     FormsModule
   ],
   providers: [],
+  entryComponents: [DialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

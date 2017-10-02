@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
-import {MdIconRegistry} from '@angular/material';
+import {MdIconRegistry, MdDialog} from '@angular/material';
+
+import {DialogComponent} from './dialog/dialog.component';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -74,10 +76,14 @@ export class AppComponent {
 
   isDarkTheme = false;
 
-  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
+  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer, private dialog: MdDialog) {
     // To avoid XSS attacks, the URL needs to be trusted from inside of your application.
     const avatarsSafeUrl = sanitizer.bypassSecurityTrustResourceUrl('./assets/avatars.svg');
 
     iconRegistry.addSvgIconSetInNamespace('avatars', avatarsSafeUrl);
+  }
+
+  private openAdminDialog() {
+    this.dialog.open(DialogComponent);
   }
 }
