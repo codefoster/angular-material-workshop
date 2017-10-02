@@ -9,7 +9,9 @@ import {
   MdSlideToggleModule,
   MdCardModule,
   MdMenuModule,
-  MdDialogModule
+  MdDialogModule,
+  MdSelectModule,
+  MdCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -23,7 +25,9 @@ import {
     MdSlideToggleModule,
     MdCardModule,
     MdMenuModule,
-    MdDialogModule
+    MdDialogModule,
+    MdSelectModule,
+    MdCheckboxModule
   ]
 })
 export class MaterialModule {}
