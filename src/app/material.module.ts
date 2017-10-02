@@ -7,7 +7,8 @@ import {
   MdListModule,
   MdIconModule,
   MdSlideToggleModule,
-  MdCardModule
+  MdCardModule,
+  MdMenuModule
 } from '@angular/material';
 
 @NgModule({
@@ -19,7 +20,8 @@ import {
     MdListModule,
     MdIconModule,
     MdSlideToggleModule,
-    MdCardModule
+    MdCardModule,
+    MdMenuModule
   ]
 })
 export class MaterialModule {}
