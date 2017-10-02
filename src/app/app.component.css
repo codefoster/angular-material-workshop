@@ -18,3 +18,7 @@ md-sidenav {
 /deep/ .mat-list-item-content {
   height: auto !important;
 }
+
+.content {
+  padding: 12px;
+}
