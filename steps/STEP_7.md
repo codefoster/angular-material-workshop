@@ -35,18 +35,22 @@ You can choose your palettes out of the [Material Design Color Palettes spec](ht
 Tell **angular-cli** to also compile the themes file, because angular-cli uses webpack,
 The Angular CLI has a built-in plugin to compile scss for us, so all we have to do is include it in the styles section.
 
-###### File: `angular-cli.json`
+###### File: `.angular-cli.json`
 
 ```json
 {
+  ...
   "apps": [
     {
+      ...
       "styles": [
         "styles.css",
         "theme.scss"
       ]
+      ...
     }
   ]
+  ...
 }
 ```
 
@@ -56,7 +60,7 @@ The Angular CLI has a built-in plugin to compile scss for us, so all we have to 
 
 #### 1. Angular CLI
 
-The Angular CLI won't notice the changes in the `angular-cli.json` file. Restarting the
+The Angular CLI won't notice the changes in the `.angular-cli.json` file. Restarting the
   serve task will do the trick.
 
 ---

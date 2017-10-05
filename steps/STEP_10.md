@@ -66,7 +66,7 @@ import {MdDialogRef} from '@angular/material';
   templateUrl: 'dialog.component.html'
 })
 export class DialogComponent {
-  avatars = new Array(16).fill(0).map((_, i) => `svg-${i+1}`);
+  avatars = new Array(16).fill(0).map((_, i) => `svg-${i + 1}`);
   selectedAvatar = this.avatars[0];
 
   constructor(public dialogRef: MdDialogRef<DialogComponent>) {}
@@ -80,12 +80,14 @@ using Depndency Injection. Use the `MdDialogRef` token to close and deliver data
 ###### File: `src/app/app.component.ts`
 
 ```ts
+...
 this.dialog.open(DialogComponent).afterClosed()
   .filter(result => !!result)
   .subscribe(user => {
     this.users.push(user);
     this.selectedUser = user;
   });
+...
 ```
 
 When opening a dialog using the `MdDialog` service, there will be a `afterClosed()` observable
@@ -96,16 +98,38 @@ that will contain the result data from the `MdDialogRef`.
 ```css
 ...
 
-/deep/ md-icon.avatar {
+/deep/ .avatar {
   ...
 }
+
+...
 ```
 
 Currently the `avatar` icon in the dialog does not have the styles from the `avatar` class.
 
-This is due to the fact that Angular encapsulates the selectors in components. Using the `/deep` 
+This is due to the fact that Angular encapsulates the selectors in components. Using the `/deep/` 
 prefix will ensure that the selector also matches elements outside of the current component.
 
+We also need to add `MdSelectModule` and `MdCheckboxModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  ...
+  MdSelectModule,
+  MdCheckboxModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    ...
+    MdSelectModule,
+    MdCheckboxModule
+  ]
+})
+export class MaterialModule {}
+
+```
 --- 
 
 [Go to Summary](../README.md#summary)

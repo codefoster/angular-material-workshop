@@ -39,6 +39,30 @@ Here you will have a tab group that will contain the users list within a nav-lis
 ```
 <img src="https://cloud.githubusercontent.com/assets/6004537/24765471/24c1f7c8-1ab5-11e7-8a7d-555d78dfda59.png" width="50%">
 
+We also need to add `MdTabsModule` and `MdListModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule,
+  MdSidenavModule,
+  MdToolbarModule,
+  MdTabsModule,
+  MdListModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule,
+    MdSidenavModule,
+    MdToolbarModule,
+    MdTabsModule,
+    MdListModule
+  ]
+})
+export class MaterialModule {}
+
+```
 
 Adding [users](https://github.com/EladBezalel/material2-start/blob/workshop/src/app/app.component.ts#L14-L74) to the sidebar list
 

@@ -41,6 +41,50 @@ Here we will use `md-card` and `md-slide-toggle` components from Angular Materia
 ![image](https://cloud.githubusercontent.com/assets/6004537/24765552/7d32dbf2-1ab5-11e7-886d-3eee6fa84ba6.png)
 
 
+We also need to add `MdSlideToggleModule` and `MdCardModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  ...
+  MdSlideToggleModule,
+  MdCardModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    ...
+    MdSlideToggleModule,
+    MdCardModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
+To use `NgModel` we need to add `FormsModule` to our `AppModule`
+###### File: `src/app/app.module.ts`
+...
+
+import {FormsModule} from '@angular/forms';
+
+...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
+```
+
 ### Tips
 
 #### 1. FlexLayout

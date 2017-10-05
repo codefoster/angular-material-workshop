@@ -18,6 +18,7 @@ Creating an Angular Material dialog.
 ###### File: `src/app/app.component.html`
 
 ```html
+...
   <md-menu #themeMenu x-position="before">
     ...
   </md-menu>
@@ -25,6 +26,7 @@ Creating an Angular Material dialog.
   <button md-fab (click)="openAdminDialog()" class="fab-bottom-right">
     <md-icon>add</md-icon>
   </button>
+...
 ```
 
 A `fab` button at the bottom-right will be created to open the Angular Material dialog.
@@ -35,9 +37,9 @@ A `fab` button at the bottom-right will be created to open the Angular Material 
   ...
   
 .fab-bottom-right {
-position: fixed;
-right: 16px;
-bottom: 16px;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
 }
 ```
 
@@ -46,9 +48,11 @@ The `fab` button needs some styling to place it in the right spot.
 ###### File:  `src/app/app.component.ts`
 
 ```ts
+import {Component} from '@angular/core';
 import {MdIconRegistry, MdDialog} from '@angular/material';
 
 import {DialogComponent} from './dialog/dialog.component';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -107,7 +111,7 @@ import {DialogComponent} from './dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    DialogComponent,
+    DialogComponent
   ],
   ...
   entryComponents: [DialogComponent],
@@ -118,6 +122,25 @@ export class AppModule {}
 
 Angular would not be able to compile the `DialogComponent` when calling `openAdminDialog` because
 the dialog component is not part of the given `NgModule`.
+
+We also need to add `MdDialogModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  ...
+  MdDialogModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    ...
+    MdDialogModule
+  ]
+})
+export class MaterialModule {}
+
+```
 
 ---
 

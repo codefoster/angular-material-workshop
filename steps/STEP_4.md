@@ -85,6 +85,56 @@ export class AppComponent {
 
 ```
 
+We also need to add `MdIconModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule,
+  MdSidenavModule,
+  MdToolbarModule,
+  MdTabsModule,
+  MdListModule,
+  MdIconModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule,
+    MdSidenavModule,
+    MdToolbarModule,
+    MdTabsModule,
+    MdListModule,
+    MdIconModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
+To download the avatars we need to add `HttpModule` to our `AppModule`
+###### File: `src/app/app.module.ts`
+...
+
+import {HttpModule} from '@angular/http';
+
+...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    HttpModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
+```
+
 ###### File:  `src/app/app.component.css`
 
 ```css

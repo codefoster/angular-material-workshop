@@ -18,6 +18,7 @@ Let's add *Selected Us*er functionality and show the selected user details in ou
 ###### File:  `src/app/app.component.html`
 
 ```html
+...
 <md-sidenav mode="side" opened>
 
   <md-tab-group>
@@ -40,6 +41,7 @@ Let's add *Selected Us*er functionality and show the selected user details in ou
    <h2>{{selectedUser.name}}</h2>
    <p>{{selectedUser.details}}</p>
 </div>
+...
 ```
 
 Let's select the first user from the users list for our initial view state
@@ -49,6 +51,7 @@ Let's select the first user from the users list for our initial view state
 ```ts
 import {Component} from '@angular/core';
 import {MdIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -84,6 +87,7 @@ export class AppComponent {
 ###### File:  `src/app/app.component.css`
 
 ```css
+...
 .content {
   padding: 12px;
 }

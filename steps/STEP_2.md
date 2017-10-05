@@ -44,6 +44,27 @@ Here we will use the wireframe planning and layout to identify the components an
 </div>
 ```
 
+We also need to add `MdSidenavModule` and `MdToolbarModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule,
+  MdSidenavModule,
+  MdToolbarModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule,
+    MdSidenavModule,
+    MdToolbarModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
 Giving the host element a flex property of `1` to fill height and sidenav a default width of `320px`
 
 ###### File:  `src/app/app.component.css`

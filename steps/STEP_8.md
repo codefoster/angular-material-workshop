@@ -80,6 +80,7 @@ Add a dark theme default value to  `false`
 ```ts
 import {Component} from '@angular/core';
 import {MdIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -93,6 +94,24 @@ export class AppComponent {
 
   ...
 }
+```
+We also need to add `MdMenuModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  ...
+  MdMenuModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    ...
+    MdMenuModule
+  ]
+})
+export class MaterialModule {}
+
 ```
 
 ---
