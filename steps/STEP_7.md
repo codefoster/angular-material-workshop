@@ -10,58 +10,108 @@
 * [Step 8](./STEP_8.md)
 * [Step 9](./STEP_9.md)
 * [Step 10](./STEP_10.md)
+* [Step 11](./STEP_11.md)
+* [Step 12](./STEP_12.md)
+* [Step 13](./STEP_13.md)
+* [Step 14](./STEP_14.md)
 
 ### Step #7 Task:
 
-Add themes with the [theming mixins](https://github.com/angular/material2/blob/master/docs/theming.md) provided by Material.
+Here we will use `md-card` and `md-slide-toggle` components from Angular Material.
 
-###### File: `src/theme.scss`
+###### File:  `src/app/app.component.html`
 
-```scss
-@import '~@angular/material/_theming';
+```html
+...
 
-@include mat-core();
+<div class="content" fxLayout="row" fxLayout.sm="column" fxLayoutGap="16px">
 
-$primary: mat-palette($mat-red);
-$accent: mat-palette($mat-blue);
+  <md-card fxFlex="80">
+    <md-icon svgIcon="avatars:{{selectedUser.avatar}}" class="avatar"></md-icon>
+    <h2>{{selectedUser.name}}</h2>
+    <p>{{selectedUser.details}}</p>
+  </md-card>
 
-$theme: mat-light-theme($primary, $accent);
+  <md-card fxFlex fxLayout="column" fxLayoutGap="14px">
+    <md-slide-toggle [(ngModel)]="selectedUser.isAdmin">Is Admin?</md-slide-toggle>
+    <md-slide-toggle [(ngModel)]="selectedUser.isCool">Is Cool?</md-slide-toggle>
+  </md-card>
 
-@include angular-material-theme($theme);
+</div>
+
+...
 ```
 
-You can choose your palettes out of the [Material Design Color Palettes spec](https://material.io/guidelines/style/color.html)
+![image](https://cloud.githubusercontent.com/assets/6004537/24765552/7d32dbf2-1ab5-11e7-886d-3eee6fa84ba6.png)
 
-Tell **angular-cli** to also compile the themes file, because angular-cli uses webpack,
-The Angular CLI has a built-in plugin to compile scss for us, so all we have to do is include it in the styles section.
 
-###### File: `.angular-cli.json`
-
-```json
-{
+We also need to add `MdSlideToggleModule` and `MdCardModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
   ...
-  "apps": [
-    {
-      ...
-      "styles": [
-        "styles.css",
-        "theme.scss"
-      ]
-      ...
-    }
+  MdSlideToggleModule,
+  MdCardModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    ...
+    MdSlideToggleModule,
+    MdCardModule
   ]
-  ...
-}
+})
+export class MaterialModule {}
+
 ```
 
-> The prebuilt theme that has been included in *Step 1* is now unused and can be deleted.
+To use `NgModel` we need to add `FormsModule` to our `AppModule`
+###### File: `src/app/app.module.ts`
+...
+
+import {FormsModule} from '@angular/forms';
+
+...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    FormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
+```
 
 ### Tips
 
-#### 1. Angular CLI
+#### 1. FlexLayout
+Using `fxLayout.sm="column"` tells the content to be a column container when the screen is small (breakpoint `960px`)
 
-The Angular CLI won't notice the changes in the `.angular-cli.json` file. Restarting the
-  serve task will do the trick.
+Specifying a gap between the different children can be done by using 
+[`fxLayoutGap`](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) with a value of `16px`.
+
+#### 2. HammerJS
+
+HammerJS handles all the user interactions and gestures for Material and simplifies the API.
+
+Including the `hammerjs` package in our Angular application using Webpack.
+
+###### File:  `src/app/app.module.ts`
+
+```ts
+...
+
+import 'hammerjs';
+
+...
+```
 
 ---
 

@@ -10,103 +10,91 @@
 * [Step 8](./STEP_8.md)
 * [Step 9](./STEP_9.md)
 * [Step 10](./STEP_10.md)
+* [Step 11](./STEP_11.md)
+* [Step 12](./STEP_12.md)
+* [Step 13](./STEP_13.md)
+* [Step 14](./STEP_14.md)
 
 ### Step #6 Task:
 
-Here we will use `md-card` and `md-slide-toggle` components from Angular Material.
+Let's add *Selected Us*er functionality and show the selected user details in our details container
 
 ###### File:  `src/app/app.component.html`
 
 ```html
 ...
+<md-sidenav mode="side" opened>
 
-<div class="content" fxLayout="row" fxLayout.sm="column" fxLayoutGap="16px">
+  <md-tab-group>
+    <md-tab label="Users">
+      <md-nav-list>
+        <md-list-item *ngFor="let user of users" (click)="selectedUser = user">
+          <md-icon svgIcon="avatars:{{user.avatar}}" class="avatar"></md-icon>
+          <span>{{user.name}}</span>
+        </md-list-item>
+      </md-nav-list>
+    </md-tab>
+    <md-tab label="Settings">
+      <span>Settings</span>
+    </md-tab>
+  </md-tab-group>
 
-  <md-card fxFlex="80">
-    <md-icon svgIcon="avatars:{{selectedUser.avatar}}" class="avatar"></md-icon>
-    <h2>{{selectedUser.name}}</h2>
-    <p>{{selectedUser.details}}</p>
-  </md-card>
-
-  <md-card fxFlex fxLayout="column" fxLayoutGap="14px">
-    <md-slide-toggle [(ngModel)]="selectedUser.isAdmin">Is Admin?</md-slide-toggle>
-    <md-slide-toggle [(ngModel)]="selectedUser.isCool">Is Cool?</md-slide-toggle>
-  </md-card>
-
+</md-sidenav>
+<div class="content">
+   <md-icon svgIcon="avatars:{{selectedUser.avatar}}" class="avatar"></md-icon>
+   <h2>{{selectedUser.name}}</h2>
+   <p>{{selectedUser.details}}</p>
 </div>
-
 ...
 ```
 
-![image](https://cloud.githubusercontent.com/assets/6004537/24765552/7d32dbf2-1ab5-11e7-886d-3eee6fa84ba6.png)
+Let's select the first user from the users list for our initial view state
 
+###### File:  `src/app/app.component.ts`
 
-We also need to add `MdSlideToggleModule` and `MdCardModule` to our `MaterialModule`.
-###### File: `src/app/material.module.ts`
 ```ts
-import {NgModule} from '@angular/core';
-import {
+import {Component} from '@angular/core';
+import {MdIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  users = [
+    {
+      name: 'Lia Lugo',
+      avatar: 'svg-11',
+      details: 'I love cheese, ...',
+      isAdmin: true,
+      isCool: false
+    },
+    {
+      name: 'George Duke',
+      avatar: 'svg-12',
+      details: 'Zombie ipsum ...',
+      isAdmin: false,
+      isCool: true
+    }
+    // ...
+  ];
+
+  selectedUser = this.users[0];
+
   ...
-  MdSlideToggleModule,
-  MdCardModule
-} from '@angular/material';
-
-@NgModule({
-  exports: [
-    ...
-    MdSlideToggleModule,
-    MdCardModule
-  ]
-})
-export class MaterialModule {}
+}
 
 ```
 
-To use `NgModel` we need to add `FormsModule` to our `AppModule`
-###### File: `src/app/app.module.ts`
+###### File:  `src/app/app.component.css`
+
+```css
 ...
-
-import {FormsModule} from '@angular/forms';
-
-...
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    ...
-    FormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
-
-```
-
-### Tips
-
-#### 1. FlexLayout
-Using `fxLayout.sm="column"` tells the content to be a column container when the screen is small (breakpoint `960px`)
-
-Specifying a gap between the different children can be done by using 
-[`fxLayoutGap`](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) with a value of `16px`.
-
-#### 2. HammerJS
-
-HammerJS handles all the user interactions and gestures for Material and simplifies the API.
-
-Including the `hammerjs` package in our Angular application using Webpack.
-
-###### File:  `src/app/app.module.ts`
-
-```ts
-...
-
-import 'hammerjs';
-
-...
+.content {
+  padding: 12px;
+}
 ```
 
 ----

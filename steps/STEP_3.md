@@ -10,92 +10,78 @@
 * [Step 8](./STEP_8.md)
 * [Step 9](./STEP_9.md)
 * [Step 10](./STEP_10.md)
+* [Step 11](./STEP_11.md)
+* [Step 12](./STEP_12.md)
+* [Step 13](./STEP_13.md)
+* [Step 14](./STEP_14.md)
 
 ### Step #3 Task:
 
-Here you will have a tab group that will contain the users list within a nav-list component
+Here we will use the wireframe planning and layout to identify the components and attributes needed.
 
-###### File:  `src/app/app.component.html`
+* Add the `<md-toolbar>`, `<md-sidenav-container>`, `<md-sidenav>` containers
+
+  > **Note:** The `<md-sidenav>` is the container for the Users **master list** view, and for now a simple
+  `<div>` is the container for the User **detail** view.
+  
+* Add the **fxLayout** and **fxFlex** attributes to configure the container layouts and sizing aspects
+* Use `mode="side"` and `opened` to lock the sidenav open on the left
+
+###### File: `src/app/app.component.html`
 
 ```html
-...
-  <md-sidenav mode="side" opened>
-  
-    <md-tab-group>
-      <md-tab label="Users">
-        <md-nav-list>
-          <md-list-item *ngFor="let user of users">
-            <span>{{user.name}}</span>
-          </md-list-item>
-        </md-nav-list>
-      </md-tab>
-      <md-tab label="Settings">
-        <span>Settings</span>
-      </md-tab>
-    </md-tab-group>
-  
-  </md-sidenav>
-...
-```
-<img src="https://cloud.githubusercontent.com/assets/6004537/24765471/24c1f7c8-1ab5-11e7-8a7d-555d78dfda59.png" width="50%">
+<div fxLayout="column" fxFlex>
 
-We also need to add `MdTabsModule` and `MdListModule` to our `MaterialModule`.
+  <md-toolbar color="primary">
+    <span>Angular Material</span>
+  </md-toolbar>
+
+  <md-sidenav-container fxFlex>
+    <md-sidenav mode="side" opened>
+      Sidenav
+    </md-sidenav>
+    <div class="content">
+      Page Content
+    </div>
+  </md-sidenav-container>
+
+</div>
+```
+
+We also need to add `MdSidenavModule` and `MdToolbarModule` to our `MaterialModule`.
 ###### File: `src/app/material.module.ts`
 ```ts
 import {NgModule} from '@angular/core';
 import {
   MdButtonModule,
   MdSidenavModule,
-  MdToolbarModule,
-  MdTabsModule,
-  MdListModule
+  MdToolbarModule
 } from '@angular/material';
 
 @NgModule({
   exports: [
     MdButtonModule,
     MdSidenavModule,
-    MdToolbarModule,
-    MdTabsModule,
-    MdListModule
+    MdToolbarModule
   ]
 })
 export class MaterialModule {}
 
 ```
 
-Adding [users](https://github.com/EladBezalel/material2-start/blob/workshop/src/app/app.component.ts#L14-L74) to the sidebar list
+Giving the host element a flex property of `1` to fill height and sidenav a default width of `320px`
 
-###### File:  `src/app/app.component.ts`
+###### File:  `src/app/app.component.css`
 
-```ts
-import {Component} from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-  users = [
-    {
-      name: 'Lia Lugo',
-      avatar: 'svg-11',
-      details: 'I love cheese, ...',
-      isAdmin: true,
-      isCool: false
-    },
-    {
-      name: 'George Duke',
-      avatar: 'svg-12',
-      details: 'Zombie ipsum ...',
-      isAdmin: false,
-      isCool: true
-    }
-    // ...
-  ];
+```css
+:host {
+  display: flex;
+  flex: 1;
 }
 
+md-sidenav {
+  width: 320px;
+}
 ```
 
 ----

@@ -10,126 +10,63 @@
 * [Step 8](./STEP_8.md)
 * [Step 9](./STEP_9.md)
 * **Step 10 <-**
+* [Step 11](./STEP_11.md)
+* [Step 12](./STEP_12.md)
+* [Step 13](./STEP_13.md)
+* [Step 14](./STEP_14.md)
 
 ### Step #10 Task:
 
-Creating a form inside of the Angular Material dialog.
+Add themes with the [theming mixins](https://github.com/angular/material2/blob/master/docs/theming.md) provided by Material.
 
-###### File: `src/app/dialog/dialog.component.html`
+###### File: `src/theme.scss`
 
-```html
-<h3>Add User Dialog</h3>
-<form #form="ngForm" (ngSubmit)="dialogRef.close(form.value)" ngNativeValidate>
-  <div fxLayout="column" fxLayoutGap="8px">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <md-icon svgIcon="avatars:{{selectedAvatar}}" class="avatar"></md-icon>
-      <md-select name="avatar" fxFlex placeholder="Avatar" [(ngModel)]="selectedAvatar">
-        <md-option *ngFor="let avatar of avatars; let i = index;" [value]="avatar">Avatar - {{i + 1}}</md-option>
-      </md-select>
-    </div>
-    <md-input-container>
-      <input mdInput ngModel name="name" placeholder="Full name" required>
-    </md-input-container>
+```scss
+@import '~@angular/material/_theming';
 
-    <md-input-container>
-      <textarea mdInput ngModel name="details" placeholder="Details" rows="15" cols="60" required></textarea>
-    </md-input-container>
+@include mat-core();
 
-    <div fxLayout="row" fxLayoutGap="24px">
-      <md-checkbox ngModel name="isAdmin">Is Admin?</md-checkbox>
-      <md-checkbox ngModel name="isCool">Is Cool?</md-checkbox>
-    </div>
-  </div>
-  <md-dialog-actions align="end">
-    <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button md-button color="accent">Save User</button>
-  </md-dialog-actions>
-</form>
+$primary: mat-palette($mat-red);
+$accent: mat-palette($mat-blue);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
 ```
 
-As soon as a `<form>` element is placed inside of a component, Angular will create an Angular form
-automatically. 
+You can choose your palettes out of the [Material Design Color Palettes spec](https://material.io/guidelines/style/color.html)
 
-##### Template-Driven Forms
+Tell **angular-cli** to also compile the themes file, because angular-cli uses webpack,
+The Angular CLI has a built-in plugin to compile scss for us, so all we have to do is include it in the styles section.
 
-The form will contain different Material components; each with a `ngModel` directive on it. All components that are registered through `ngModel` and have an according `name` attribute will be included in the form's value. Once the form is valid and the form is being submitted, the form's value can be delivered
-back to the `AppComponent` and added to the array of `users`.
+###### File: `.angular-cli.json`
 
-
-###### File:  `src/app/dialog/dialog.component.ts`
-
-```ts
-import {Component} from '@angular/core';
-import {MdDialogRef} from '@angular/material';
-
-@Component({
-  templateUrl: 'dialog.component.html'
-})
-export class DialogComponent {
-  avatars = new Array(16).fill(0).map((_, i) => `svg-${i + 1}`);
-  selectedAvatar = this.avatars[0];
-
-  constructor(public dialogRef: MdDialogRef<DialogComponent>) {}
-}
-
-```
-
-For components that are opened through the `MdDialog` service, the `MdDialogRef` can be injected
-using Depndency Injection. Use the `MdDialogRef` token to close and deliver data back to the origin component.
-
-###### File: `src/app/app.component.ts`
-
-```ts
-...
-this.dialog.open(DialogComponent).afterClosed()
-  .filter(result => !!result)
-  .subscribe(user => {
-    this.users.push(user);
-    this.selectedUser = user;
-  });
-...
-```
-
-When opening a dialog using the `MdDialog` service, there will be a `afterClosed()` observable
-that will contain the result data from the `MdDialogRef`.
-
-###### File: `src/app/app.component.css`
-
-```css
-...
-
-/deep/ .avatar {
+```json
+{
   ...
-}
-
-...
-```
-
-Currently the `avatar` icon in the dialog does not have the styles from the `avatar` class.
-
-This is due to the fact that Angular encapsulates the selectors in components. Using the `/deep/` 
-prefix will ensure that the selector also matches elements outside of the current component.
-
-We also need to add `MdSelectModule` and `MdCheckboxModule` to our `MaterialModule`.
-###### File: `src/app/material.module.ts`
-```ts
-import {NgModule} from '@angular/core';
-import {
-  ...
-  MdSelectModule,
-  MdCheckboxModule
-} from '@angular/material';
-
-@NgModule({
-  exports: [
-    ...
-    MdSelectModule,
-    MdCheckboxModule
+  "apps": [
+    {
+      ...
+      "styles": [
+        "styles.css",
+        "theme.scss"
+      ]
+      ...
+    }
   ]
-})
-export class MaterialModule {}
-
+  ...
+}
 ```
---- 
 
-[Go to Summary](../README.md#summary)
+> The prebuilt theme that has been included in *Step 1* is now unused and can be deleted.
+
+### Tips
+
+#### 1. Angular CLI
+
+The Angular CLI won't notice the changes in the `.angular-cli.json` file. Restarting the
+  serve task will do the trick.
+
+---
+
+[Go to Tutorial Step 11](./STEP_11.md)

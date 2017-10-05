@@ -10,13 +10,16 @@
 * [Step 8](./STEP_8.md)
 * [Step 9](./STEP_9.md)
 * [Step 10](./STEP_10.md)
+* [Step 11](./STEP_11.md)
+* [Step 12](./STEP_12.md)
+* [Step 13](./STEP_13.md)
+* [Step 14](./STEP_14.md)
 
 ### Step #4 Task:
 
-Here you will use the `MdIconRegistry` service provided by Material which allows us to add a namespace for a group of svg's.
+Here you will have a tab group that will contain the users list within a nav-list component
 
-
-###### File: `src/app/app.component.html`
+###### File:  `src/app/app.component.html`
 
 ```html
 ...
@@ -26,7 +29,6 @@ Here you will use the `MdIconRegistry` service provided by Material which allows
       <md-tab label="Users">
         <md-nav-list>
           <md-list-item *ngFor="let user of users">
-            <md-icon svgIcon="avatars:{{user.avatar}}" class="avatar"></md-icon>
             <span>{{user.name}}</span>
           </md-list-item>
         </md-nav-list>
@@ -39,17 +41,39 @@ Here you will use the `MdIconRegistry` service provided by Material which allows
   </md-sidenav>
 ...
 ```
+<img src="https://cloud.githubusercontent.com/assets/6004537/24765471/24c1f7c8-1ab5-11e7-8a7d-555d78dfda59.png" width="50%">
 
-By using the `addSvgIconSetInNamespace` function we provide a namespace that can be used with `md-icon` 
-and the location of that svg group.
-By that, we can have `<md-icon svgIcon="[namespace]:[id]">` and it would look the namespace and the id in it.
+We also need to add `MdTabsModule` and `MdListModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule,
+  MdSidenavModule,
+  MdToolbarModule,
+  MdTabsModule,
+  MdListModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule,
+    MdSidenavModule,
+    MdToolbarModule,
+    MdTabsModule,
+    MdListModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
+Adding [users](https://github.com/EladBezalel/material2-start/blob/workshop/src/app/app.component.ts#L14-L74) to the sidebar list
 
 ###### File:  `src/app/app.component.ts`
 
 ```ts
 import {Component} from '@angular/core';
-import {MdIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -74,97 +98,10 @@ export class AppComponent {
     }
     // ...
   ];
-
-  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
-    // To avoid XSS attacks, the URL needs to be trusted from inside of your application.
-    const avatarsSafeUrl = sanitizer.bypassSecurityTrustResourceUrl('./assets/avatars.svg');
-
-    iconRegistry.addSvgIconSetInNamespace('avatars', avatarsSafeUrl);
-  }
 }
 
 ```
-
-We also need to add `MdIconModule` to our `MaterialModule`.
-###### File: `src/app/material.module.ts`
-```ts
-import {NgModule} from '@angular/core';
-import {
-  MdButtonModule,
-  MdSidenavModule,
-  MdToolbarModule,
-  MdTabsModule,
-  MdListModule,
-  MdIconModule
-} from '@angular/material';
-
-@NgModule({
-  exports: [
-    MdButtonModule,
-    MdSidenavModule,
-    MdToolbarModule,
-    MdTabsModule,
-    MdListModule,
-    MdIconModule
-  ]
-})
-export class MaterialModule {}
-
-```
-
-To download the avatars we need to add `HttpModule` to our `AppModule`
-###### File: `src/app/app.module.ts`
-...
-
-import {HttpModule} from '@angular/http';
-
-...
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    ...
-    HttpModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
-
-```
-
-###### File:  `src/app/app.component.css`
-
-```css
-...
-
-.avatar {
-  overflow: hidden;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  margin: 12px;
-}
-
-/deep/ .mat-list-item-content {
-  height: auto !important;
-}
-```
-
-### Tips
-
-#### 1. Deep CSS Operators
-
-Using the `/deep/` prefix on selectors will cause the selector to be moved out of the view encapsulation.
-
-#### 2.  List Items
-
-Angular Material list items have a fixed height and won't expand to the height of the content.
-    Overwriting and forcing the height to `auto` allows the avatar to take full height.
 
 ----
-
 
 [Go to Tutorial Step 5](./STEP_5.md)
