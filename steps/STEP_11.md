@@ -14,10 +14,11 @@
 * [Step 12](./STEP_12.md)
 * [Step 13](./STEP_13.md)
 * [Step 14](./STEP_14.md)
+* [Step 15](./STEP_15.md)
 
 ### Step #11 Task:
 
-Add a dark theme and a menu with a button to toggle the theme: 
+Add themes with the [theming mixins](https://github.com/angular/material2/blob/master/docs/theming.md) provided by Material.
 
 ###### File: `src/theme.scss`
 
@@ -32,91 +33,40 @@ $accent: mat-palette($mat-blue);
 $theme: mat-light-theme($primary, $accent);
 
 @include angular-material-theme($theme);
-
-.dark-theme {
-  $dark-primary: mat-palette($mat-light-blue);
-  $dark-accent: mat-palette($mat-green);
-
-  $dark-theme: mat-dark-theme($dark-primary, $dark-accent);
-
-  @include angular-material-theme($dark-theme);
-}
-
 ```
 
-Notice that we have a button with `[mdMenuTriggerFor]` attribute that points what menu to open,
-By setting the value `menu` for that attribute, we find an element with that name
-which happens to be `<md-menu #menu>`, and by clicking the trigger element, the menu would be opened
+You can choose your palettes out of the [Material Design Color Palettes spec](https://material.io/guidelines/style/color.html)
 
-###### File: `src/app/app.component.html`
+Tell **angular-cli** to also compile the themes file, because angular-cli uses webpack,
+The Angular CLI has a built-in plugin to compile scss for us, so all we have to do is include it in the styles section.
 
-```html
-<div fxLayout="column" fxFlex [class.dark-theme]="isDarkTheme">
+###### File: `.angular-cli.json`
 
-  <md-toolbar color="primary">
-    <span>Angular Material</span>
-
-    <!-- Filler that pushes the menu button to the end of the toolbar -->
-    <span fxFlex></span>
-
-    <button md-icon-button [mdMenuTriggerFor]="themeMenu">
-      <md-icon>more_vert</md-icon>
-    </button>
-
-  </md-toolbar>
-
-  <md-sidenav-container fxFlex fxLayout="row">
-    ...
-  </md-sidenav-container>
-  
-  <md-menu #themeMenu x-position="before">
-    <button md-menu-item (click)="isDarkTheme = !isDarkTheme">Toggle Theme</button>
-  </md-menu>
-</div>
-```
-
-Also notice we're using `md-icon` again, but this time we're passing a ligature name that will be resovled out of the Material Icons font that we [imported in the `styles.css`](https://github.com/EladBezalel/material2-start/blob/workshop/src/styles.css#L1), you can see the full list of icons ligatures [here](https://material.io/icons/)
-
-Add a dark theme default value to  `false`
-
-###### File: `src/app/app.component.ts`
-
-```ts
-import {Component} from '@angular/core';
-import {MdIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
+```json
+{
   ...
-
-  isDarkTheme = false;
-
-  ...
-}
-```
-We also need to add `MdMenuModule` to our `MaterialModule`.
-###### File: `src/app/material.module.ts`
-```ts
-import {NgModule} from '@angular/core';
-import {
-  ...
-  MdMenuModule
-} from '@angular/material';
-
-@NgModule({
-  exports: [
-    ...
-    MdMenuModule
+  "apps": [
+    {
+      ...
+      "styles": [
+        "styles.css",
+        "theme.scss"
+      ]
+      ...
+    }
   ]
-})
-export class MaterialModule {}
-
+  ...
+}
 ```
+
+> The prebuilt theme that has been included in *Step 1* is now unused and can be deleted.
+
+### Tips
+
+#### 1. Angular CLI
+
+The Angular CLI won't notice the changes in the `.angular-cli.json` file. Restarting the
+  serve task will do the trick.
 
 ---
 

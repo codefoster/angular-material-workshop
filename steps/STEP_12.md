@@ -14,48 +14,77 @@
 * **Step 12 <-**
 * [Step 13](./STEP_13.md)
 * [Step 14](./STEP_14.md)
+* [Step 15](./STEP_15.md)
 
 ### Step #12 Task:
 
-Creating an Angular Material dialog.
+Add a dark theme and a menu with a button to toggle the theme: 
+
+###### File: `src/theme.scss`
+
+```scss
+@import '~@angular/material/_theming';
+
+@include mat-core();
+
+$primary: mat-palette($mat-red);
+$accent: mat-palette($mat-blue);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
+
+.dark-theme {
+  $dark-primary: mat-palette($mat-light-blue);
+  $dark-accent: mat-palette($mat-green);
+
+  $dark-theme: mat-dark-theme($dark-primary, $dark-accent);
+
+  @include angular-material-theme($dark-theme);
+}
+
+```
+
+Notice that we have a button with `[mdMenuTriggerFor]` attribute that points what menu to open,
+By setting the value `menu` for that attribute, we find an element with that name
+which happens to be `<md-menu #menu>`, and by clicking the trigger element, the menu would be opened
 
 ###### File: `src/app/app.component.html`
 
 ```html
-...
-  <md-menu #themeMenu x-position="before">
+<div fxLayout="column" fxFlex [class.dark-theme]="isDarkTheme">
+
+  <md-toolbar color="primary">
+    <span>Angular Material</span>
+
+    <!-- Filler that pushes the menu button to the end of the toolbar -->
+    <span fxFlex></span>
+
+    <button md-icon-button [mdMenuTriggerFor]="themeMenu">
+      <md-icon>more_vert</md-icon>
+    </button>
+
+  </md-toolbar>
+
+  <md-sidenav-container fxFlex fxLayout="row">
     ...
-  </md-menu>
-
-  <button md-fab (click)="openAdminDialog()" class="fab-bottom-right">
-    <md-icon>add</md-icon>
-  </button>
-...
-```
-
-A `fab` button at the bottom-right will be created to open the Angular Material dialog.
-
-###### File:  `src/app/app.component.css`
-
-```css
-  ...
+  </md-sidenav-container>
   
-.fab-bottom-right {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-}
+  <md-menu #themeMenu x-position="before">
+    <button md-menu-item (click)="isDarkTheme = !isDarkTheme">Toggle Theme</button>
+  </md-menu>
+</div>
 ```
 
-The `fab` button needs some styling to place it in the right spot.
+Also notice we're using `md-icon` again, but this time we're passing a ligature name that will be resovled out of the Material Icons font that we [imported in the `styles.css`](https://github.com/EladBezalel/material2-start/blob/workshop/src/styles.css#L1), you can see the full list of icons ligatures [here](https://material.io/icons/)
 
-###### File:  `src/app/app.component.ts`
+Add a dark theme default value to  `false`
+
+###### File: `src/app/app.component.ts`
 
 ```ts
 import {Component} from '@angular/core';
-import {MdIconRegistry, MdDialog} from '@angular/material';
-
-import {DialogComponent} from './dialog/dialog.component';
+import {MdIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -64,82 +93,26 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
   ...
 
-  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer, private dialog: MdDialog) {
-    ...
-  }
+  isDarkTheme = false;
 
-  private openAdminDialog() {
-    this.dialog.open(DialogComponent);
-  }
-
-...
-```
-
-To be able to show dialogs, the `MdDialog` service needs to be injected. A function that is 
-referenced from the template will then open the dialog.
-
-###### File:  `src/app/dialog/dialog.component.ts`
-
-```ts
-import {Component} from '@angular/core';
-
-@Component({
-  templateUrl: 'dialog.component.html'
-})
-export class DialogComponent {}
-```
-
-###### File: `src/app/dialog/dialog.component.html`
-
-```html
-<h3 md-dialog-title>Admin Dialog</h3>
-
-<md-dialog-content>
-  This is the admin dialog.
-</md-dialog-content>
-```
-
-A dialog can be just a normal Angular component. You can use specific directives 
-like `md-dialog-title`, `md-dialog-content` or `md-dialog-actions` to style your dialog.
-
-###### File: `src/app/app.module.ts`
-
-```ts
-...
-
-import {DialogComponent} from './dialog/dialog.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    DialogComponent
-  ],
   ...
-  entryComponents: [DialogComponent],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+}
 ```
-
-Angular would not be able to compile the `DialogComponent` when calling `openAdminDialog` because
-the dialog component is not part of the given `NgModule`.
-
-We also need to add `MdDialogModule` to our `MaterialModule`.
+We also need to add `MdMenuModule` to our `MaterialModule`.
 ###### File: `src/app/material.module.ts`
 ```ts
 import {NgModule} from '@angular/core';
 import {
   ...
-  MdDialogModule
+  MdMenuModule
 } from '@angular/material';
 
 @NgModule({
   exports: [
     ...
-    MdDialogModule
+    MdMenuModule
   ]
 })
 export class MaterialModule {}

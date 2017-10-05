@@ -14,126 +14,139 @@
 * [Step 12](./STEP_12.md)
 * **Step 13 <-**
 * [Step 14](./STEP_14.md)
+* [Step 15](./STEP_15.md)
 
 ### Step #13 Task:
 
-Creating a form inside of the Angular Material dialog.
+Creating an Angular Material dialog.
 
-###### File: `src/app/dialog/dialog.component.html`
+###### File: `src/app/app.component.html`
 
 ```html
-<h3>Add User Dialog</h3>
-<form #form="ngForm" (ngSubmit)="dialogRef.close(form.value)" ngNativeValidate>
-  <div fxLayout="column" fxLayoutGap="8px">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <md-icon svgIcon="avatars:{{selectedAvatar}}" class="avatar"></md-icon>
-      <md-select name="avatar" fxFlex placeholder="Avatar" [(ngModel)]="selectedAvatar">
-        <md-option *ngFor="let avatar of avatars; let i = index;" [value]="avatar">Avatar - {{i + 1}}</md-option>
-      </md-select>
-    </div>
-    <md-input-container>
-      <input mdInput ngModel name="name" placeholder="Full name" required>
-    </md-input-container>
+...
+  <md-menu #themeMenu x-position="before">
+    ...
+  </md-menu>
 
-    <md-input-container>
-      <textarea mdInput ngModel name="details" placeholder="Details" rows="15" cols="60" required></textarea>
-    </md-input-container>
-
-    <div fxLayout="row" fxLayoutGap="24px">
-      <md-checkbox ngModel name="isAdmin">Is Admin?</md-checkbox>
-      <md-checkbox ngModel name="isCool">Is Cool?</md-checkbox>
-    </div>
-  </div>
-  <md-dialog-actions align="end">
-    <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button md-button color="accent">Save User</button>
-  </md-dialog-actions>
-</form>
+  <button md-fab (click)="openAdminDialog()" class="fab-bottom-right">
+    <md-icon>add</md-icon>
+  </button>
+...
 ```
 
-As soon as a `<form>` element is placed inside of a component, Angular will create an Angular form
-automatically. 
+A `fab` button at the bottom-right will be created to open the Angular Material dialog.
 
-##### Template-Driven Forms
+###### File:  `src/app/app.component.css`
 
-The form will contain different Material components; each with a `ngModel` directive on it. All components that are registered through `ngModel` and have an according `name` attribute will be included in the form's value. Once the form is valid and the form is being submitted, the form's value can be delivered
-back to the `AppComponent` and added to the array of `users`.
+```css
+  ...
+  
+.fab-bottom-right {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+}
+```
 
+The `fab` button needs some styling to place it in the right spot.
+
+###### File:  `src/app/app.component.ts`
+
+```ts
+import {Component} from '@angular/core';
+import {MdIconRegistry, MdDialog} from '@angular/material';
+
+import {DialogComponent} from './dialog/dialog.component';
+import {DomSanitizer} from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+  ...
+
+  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer, private dialog: MdDialog) {
+    ...
+  }
+
+  private openAdminDialog() {
+    this.dialog.open(DialogComponent);
+  }
+
+...
+```
+
+To be able to show dialogs, the `MdDialog` service needs to be injected. A function that is 
+referenced from the template will then open the dialog.
 
 ###### File:  `src/app/dialog/dialog.component.ts`
 
 ```ts
 import {Component} from '@angular/core';
-import {MdDialogRef} from '@angular/material';
 
 @Component({
   templateUrl: 'dialog.component.html'
 })
-export class DialogComponent {
-  avatars = new Array(16).fill(0).map((_, i) => `svg-${i + 1}`);
-  selectedAvatar = this.avatars[0];
-
-  constructor(public dialogRef: MdDialogRef<DialogComponent>) {}
-}
-
+export class DialogComponent {}
 ```
 
-For components that are opened through the `MdDialog` service, the `MdDialogRef` can be injected
-using Depndency Injection. Use the `MdDialogRef` token to close and deliver data back to the origin component.
+###### File: `src/app/dialog/dialog.component.html`
 
-###### File: `src/app/app.component.ts`
+```html
+<h3 md-dialog-title>Admin Dialog</h3>
+
+<md-dialog-content>
+  This is the admin dialog.
+</md-dialog-content>
+```
+
+A dialog can be just a normal Angular component. You can use specific directives 
+like `md-dialog-title`, `md-dialog-content` or `md-dialog-actions` to style your dialog.
+
+###### File: `src/app/app.module.ts`
 
 ```ts
 ...
-this.dialog.open(DialogComponent).afterClosed()
-  .filter(result => !!result)
-  .subscribe(user => {
-    this.users.push(user);
-    this.selectedUser = user;
-  });
-...
-```
 
-When opening a dialog using the `MdDialog` service, there will be a `afterClosed()` observable
-that will contain the result data from the `MdDialogRef`.
+import {DialogComponent} from './dialog/dialog.component';
 
-###### File: `src/app/app.component.css`
-
-```css
-...
-
-/deep/ .avatar {
+@NgModule({
+  declarations: [
+    AppComponent,
+    DialogComponent
+  ],
   ...
-}
-
-...
+  entryComponents: [DialogComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 ```
 
-Currently the `avatar` icon in the dialog does not have the styles from the `avatar` class.
+Angular would not be able to compile the `DialogComponent` when calling `openAdminDialog` because
+the dialog component is not part of the given `NgModule`.
 
-This is due to the fact that Angular encapsulates the selectors in components. Using the `/deep/` 
-prefix will ensure that the selector also matches elements outside of the current component.
-
-We also need to add `MdSelectModule` and `MdCheckboxModule` to our `MaterialModule`.
+We also need to add `MdDialogModule` to our `MaterialModule`.
 ###### File: `src/app/material.module.ts`
 ```ts
 import {NgModule} from '@angular/core';
 import {
   ...
-  MdSelectModule,
-  MdCheckboxModule
+  MdDialogModule
 } from '@angular/material';
 
 @NgModule({
   exports: [
     ...
-    MdSelectModule,
-    MdCheckboxModule
+    MdDialogModule
   ]
 })
 export class MaterialModule {}
 
 ```
+
 ---
 
 [Go to Tutorial Step 14](./STEP_14.md)

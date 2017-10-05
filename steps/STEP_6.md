@@ -14,41 +14,40 @@
 * [Step 12](./STEP_12.md)
 * [Step 13](./STEP_13.md)
 * [Step 14](./STEP_14.md)
+* [Step 15](./STEP_15.md)
 
 ### Step #6 Task:
 
-Let's add *Selected Us*er functionality and show the selected user details in our details container
+Here you will use the `MdIconRegistry` service provided by Material which allows us to add a namespace for a group of svg's.
 
-###### File:  `src/app/app.component.html`
+
+###### File: `src/app/app.component.html`
 
 ```html
 ...
-<md-sidenav mode="side" opened>
-
-  <md-tab-group>
-    <md-tab label="Users">
-      <md-nav-list>
-        <md-list-item *ngFor="let user of users" (click)="selectedUser = user">
-          <md-icon svgIcon="avatars:{{user.avatar}}" class="avatar"></md-icon>
-          <span>{{user.name}}</span>
-        </md-list-item>
-      </md-nav-list>
-    </md-tab>
-    <md-tab label="Settings">
-      <span>Settings</span>
-    </md-tab>
-  </md-tab-group>
-
-</md-sidenav>
-<div class="content">
-   <md-icon svgIcon="avatars:{{selectedUser.avatar}}" class="avatar"></md-icon>
-   <h2>{{selectedUser.name}}</h2>
-   <p>{{selectedUser.details}}</p>
-</div>
+  <md-sidenav mode="side" opened>
+  
+    <md-tab-group>
+      <md-tab label="Users">
+        <md-nav-list>
+          <md-list-item *ngFor="let user of users">
+            <md-icon svgIcon="avatars:{{user.avatar}}" class="avatar"></md-icon>
+            <span>{{user.name}}</span>
+          </md-list-item>
+        </md-nav-list>
+      </md-tab>
+      <md-tab label="Settings">
+        <span>Settings</span>
+      </md-tab>
+    </md-tab-group>
+  
+  </md-sidenav>
 ...
 ```
 
-Let's select the first user from the users list for our initial view state
+By using the `addSvgIconSetInNamespace` function we provide a namespace that can be used with `md-icon` 
+and the location of that svg group.
+By that, we can have `<md-icon svgIcon="[namespace]:[id]">` and it would look the namespace and the id in it.
 
 ###### File:  `src/app/app.component.ts`
 
@@ -81,10 +80,64 @@ export class AppComponent {
     // ...
   ];
 
-  selectedUser = this.users[0];
+  constructor(iconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
+    // To avoid XSS attacks, the URL needs to be trusted from inside of your application.
+    const avatarsSafeUrl = sanitizer.bypassSecurityTrustResourceUrl('./assets/avatars.svg');
 
-  ...
+    iconRegistry.addSvgIconSetInNamespace('avatars', avatarsSafeUrl);
+  }
 }
+
+```
+
+We also need to add `MdIconModule` to our `MaterialModule`.
+###### File: `src/app/material.module.ts`
+```ts
+import {NgModule} from '@angular/core';
+import {
+  MdButtonModule,
+  MdSidenavModule,
+  MdToolbarModule,
+  MdTabsModule,
+  MdListModule,
+  MdIconModule
+} from '@angular/material';
+
+@NgModule({
+  exports: [
+    MdButtonModule,
+    MdSidenavModule,
+    MdToolbarModule,
+    MdTabsModule,
+    MdListModule,
+    MdIconModule
+  ]
+})
+export class MaterialModule {}
+
+```
+
+To download the avatars we need to add `HttpModule` to our `AppModule`
+###### File: `src/app/app.module.ts`
+```
+...
+
+import {HttpModule} from '@angular/http';
+
+...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    ...
+    HttpModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 
 ```
 
@@ -92,10 +145,30 @@ export class AppComponent {
 
 ```css
 ...
-.content {
-  padding: 12px;
+
+.avatar {
+  overflow: hidden;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 12px;
+}
+
+/deep/ .mat-list-item-content {
+  height: auto !important;
 }
 ```
+
+### Tips
+
+#### 1. Deep CSS Operators
+
+Using the `/deep/` prefix on selectors will cause the selector to be moved out of the view encapsulation.
+
+#### 2.  List Items
+
+Angular Material list items have a fixed height and won't expand to the height of the content.
+    Overwriting and forcing the height to `auto` allows the avatar to take full height.
 
 ----
 
