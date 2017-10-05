@@ -4,7 +4,8 @@ import {
   MdSidenavModule,
   MdToolbarModule,
   MdTabsModule,
-  MdListModule
+  MdListModule,
+  MdIconModule
 } from '@angular/material';
 
 @NgModule({
@@ -13,7 +14,8 @@ import {
     MdSidenavModule,
     MdToolbarModule,
     MdTabsModule,
-    MdListModule
+    MdListModule,
+    MdIconModule
   ]
 })
 export class MaterialModule {}
