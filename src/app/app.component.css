@@ -1,8 +1,14 @@
 :host {
   display: flex;
-  flex-direction: column;
   flex: auto;
-  align-items: center;
+}
+
+mat-sidenav-container {
+  min-height: 500px;
+}
+mat-sidenav {
+  width: 320px;
+  padding: 12px;
 }
 
 .content {

@@ -1,0 +1,19 @@
+<div fxLayout="column" fxFlex>
+
+  <mat-toolbar color="primary">
+    <span>  Angular Material</span>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlex>
+    <mat-sidenav #side mode="side" [opened]="true">
+      Sidenav
+    </mat-sidenav>
+
+    <mat-sidenav-content
+        class="content"
+        (click)="side.opened ? side.close() : side.open() ">
+      Page Content
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
