@@ -6,7 +6,15 @@
 
   <mat-sidenav-container fxFlex>
     <mat-sidenav #side mode="side" [opened]="true">
-      Sidenav
+      <mat-tab-group>
+        <mat-tab label="Users">
+          <mat-nav-list>
+            <mat-list-item *ngFor="let user of users">
+              <span>{{user.name}}</span>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-tab>
+      </mat-tab-group>
     </mat-sidenav>
 
     <mat-sidenav-content
