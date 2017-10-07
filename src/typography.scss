@@ -1,0 +1,7 @@
+@import '~@angular/material/_theming';
+
+$my-typography: mat-typography-config(
+  $headline: mat-typography-level(58px, 50px, 900)
+);
+
+@include angular-material-typography($my-typography);
