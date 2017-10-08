@@ -12,6 +12,7 @@ import {USERS_DATA} from './users/users.model';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class AppComponent {
+  isDarkTheme = false;
   users = USERS_DATA;
   selectedUser;
 
