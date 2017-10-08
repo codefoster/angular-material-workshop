@@ -19,6 +19,7 @@ import 'hammerjs';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    FormsModule,
     FlexLayoutModule,
     MaterialModule
   ],

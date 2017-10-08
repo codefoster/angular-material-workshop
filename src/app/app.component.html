@@ -18,12 +18,18 @@
           </mat-tab>
         </mat-tab-group>
       </mat-sidenav>
-      <mat-sidenav-content
-          class="content">
-        <div class="content">
-           <mat-icon svgIcon="avatars:{{selectedUser?.avatar}}" class="avatar"></mat-icon>
-           <h2>{{selectedUser?.name}}</h2>
-           <p>{{selectedUser?.details}}</p>
+      <mat-sidenav-content class="content">
+        <div class="content" fxLayout="row" fxLayoutGap="16px">
+          <mat-card fxFlex="80" *ngIf="selectedUser" >
+            <mat-icon svgIcon="avatars:{{selectedUser.avatar}}" class="avatar"></mat-icon>
+            <h2>{{selectedUser.name}}</h2>
+            <p>{{selectedUser.details}}</p>
+          </mat-card>
+
+          <mat-card fxFlex fxLayout="column" fxLayoutGap="14px" >
+            <mat-slide-toggle [(ngModel)]="selectedUser.isAdmin">Is Admin?</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="selectedUser.isCool">Is Cool?</mat-slide-toggle>
+          </mat-card>
         </div>
       </mat-sidenav-content>
   </mat-sidenav-container>

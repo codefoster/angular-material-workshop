@@ -13,6 +13,7 @@ mat-sidenav {
 
 .content {
   padding: 12px;
+  min-height: 98%;
 }
 
 .avatar {
