@@ -39,6 +39,10 @@
       </mat-sidenav-content>
   </mat-sidenav-container>
 
+  <button mat-fab (click)="openAdminDialog()" class="fab-bottom-right">
+      <mat-icon>add</mat-icon>
+  </button>
+
   <mat-menu #themeMenu x-position="before">
     <button mat-menu-item (click)="isDarkTheme = !isDarkTheme">Toggle Theme</button>
   </mat-menu>

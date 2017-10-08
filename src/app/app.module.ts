@@ -8,12 +8,13 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MaterialModule} from './material.module';
 
 import {AppComponent} from './app.component';
+import {AdminDialogComponent} from './admin/user.dialog.component';
 
 import 'hammerjs';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, AdminDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +25,7 @@ import 'hammerjs';
     MaterialModule
   ],
   providers: [],
-  entryComponents: [  ],
+  entryComponents: [ AdminDialogComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

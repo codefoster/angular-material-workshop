@@ -1,9 +1,10 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
-import {MatIconRegistry} from '@angular/material';
+import {MatDialog, MatIconRegistry} from '@angular/material';
 
 import {USERS_DATA} from './users/users.model';
+import {AdminDialogComponent} from './admin/user.dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
   users = USERS_DATA;
   selectedUser;
 
-  constructor(registry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(registry: MatIconRegistry, sanitizer: DomSanitizer,private dialogs:MatDialog) {
     // To avoid XSS attacks, the URL needs to be trusted from inside of your application.
     const avatarsSafeUrl = sanitizer.bypassSecurityTrustResourceUrl('./assets/avatars.svg');
 
@@ -25,5 +26,9 @@ export class AppComponent {
 
   ngOnInit() {
     this.selectedUser = this.users[0];
+  }
+
+  openAdminDialog() {
+    this.dialogs.open(AdminDialogComponent);
   }
 }
