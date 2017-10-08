@@ -16,7 +16,7 @@ mat-sidenav {
   min-height: 98%;
 }
 
-.avatar {
+/deep/ .avatar {
   overflow: hidden;
   width: 64px;
   height: 64px;

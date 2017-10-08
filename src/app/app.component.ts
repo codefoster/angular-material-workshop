@@ -6,6 +6,8 @@ import {MatDialog, MatIconRegistry} from '@angular/material';
 import {USERS_DATA} from './users/users.model';
 import {AdminDialogComponent} from './admin/user.dialog.component';
 
+import 'rxjs/add/operator/filter';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,6 +31,16 @@ export class AppComponent {
   }
 
   openAdminDialog() {
-    this.dialogs.open(AdminDialogComponent);
+    this.dialogs
+        .open(AdminDialogComponent)
+        .afterClosed()
+        .filter(result => !!result)
+        .subscribe(user => {
+          // Add new user
+          this.users.push(user);
+          this.selectedUser = user;
+        });
   }
+
+
 }
