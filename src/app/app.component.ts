@@ -13,6 +13,7 @@ import {USERS_DATA} from './users/users.model';
 })
 export class AppComponent {
   users = USERS_DATA;
+  selectedUser;
 
   constructor(registry: MatIconRegistry, sanitizer: DomSanitizer) {
     // To avoid XSS attacks, the URL needs to be trusted from inside of your application.
@@ -21,4 +22,7 @@ export class AppComponent {
     registry.addSvgIconSetInNamespace('avatars', avatarsSafeUrl);
   }
 
+  ngOnInit() {
+    this.selectedUser = this.users[0];
+  }
 }

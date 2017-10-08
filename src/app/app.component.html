@@ -1,15 +1,16 @@
-<div fxLayout="column" fxFlex [class.dark-theme]="isDarkTheme">
+<div fxLayout="column" fxFlex >
 
   <mat-toolbar color="primary">
     <span>Angular Material</span>
   </mat-toolbar>
 
   <mat-sidenav-container fxFlex>
+
       <mat-sidenav #side mode="side" [opened]="true">
          <mat-tab-group>
           <mat-tab label="Users">
             <mat-nav-list>
-              <mat-list-item *ngFor="let user of users">
+              <mat-list-item *ngFor="let user of users" (click)="selectedUser = user">
                 <mat-icon svgIcon="avatars:{{user.avatar}}" class="avatar"></mat-icon>
                 <span>{{user.name}}</span>
               </mat-list-item>
@@ -17,8 +18,14 @@
           </mat-tab>
         </mat-tab-group>
       </mat-sidenav>
-      <mat-sidenav-content class="content">
-        Content
+      <mat-sidenav-content
+          class="content">
+        <div class="content">
+           <mat-icon svgIcon="avatars:{{selectedUser?.avatar}}" class="avatar"></mat-icon>
+           <h2>{{selectedUser?.name}}</h2>
+           <p>{{selectedUser?.details}}</p>
+        </div>
       </mat-sidenav-content>
-    </mat-sidenav-container>
+  </mat-sidenav-container>
+
 </div>
